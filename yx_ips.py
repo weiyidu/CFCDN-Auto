@@ -101,19 +101,18 @@ def process_site_data(url):
                     latency_unit = 'ms'
                     data.append(f"{ip_address}#{line_name}-{latency_value}{latency_unit}")
 
-    elif "345673.xyz" in url:
-        rows = soup.find_all('tr', class_=re.compile(r'line-cm|line-ct|line-cu'))
+    elif "vps789.com/cfip/" in url:
+        rows = soup.find_all('tr')
         for row in rows:
-            tds = row.find_all('td')
-            if len(tds) >= 4:
-                line_name = tds[0].text.strip()
-                ip_address = tds[1].text.strip()
-                latency_text = tds[3].text.strip()
+            columns = row.find_all('td')
+            if len(columns) >= 5:
+                ip_address = columns[0].text.strip()
+                latency_text = columns[4].text.strip()
                 latency_match = latency_pattern.match(latency_text)
                 if latency_match:
                     latency_value = latency_match.group(1)
                     latency_unit = 'ms'
-                    data.append(f"{ip_address}#{line_name}-{latency_value}{latency_unit}")
+                    data.append(f"{ip_address}-{latency_value}{latency_unit}")
 
     return data
 
